@@ -1,0 +1,6 @@
+Scrapy==2.6.1
+python-dotenv==0.19.2
+pymongo==4.0.2
+arrow==1.2.2
+xmltodict==0.12.0
+fake-useragent==0.1.11
