@@ -47,3 +47,20 @@ echo MONGO_PSW=123456 >> .env
 > 
 > settings.py   ———— 配置文件
 > 
+
+
+## 抓取字段
+```
+crawl_time # 抓取时间
+hospital_name  # 医院名称
+title  # 标题
+ori_url  # 源文连接
+release_date  # 发布时间
+annex_link  # 附件链接（正文包含附件时）
+annex_title  # 附件标题（正文包含附件时）
+img_link  # 图片链接（正文是一张图片时）
+img_title  # 图片标题（正文是一张图片时）
+mainbody  # 内容主题（正文时文本时）
+mainbody_table  # 内容表格（正文时文本时）
+others  # 其他
+```
