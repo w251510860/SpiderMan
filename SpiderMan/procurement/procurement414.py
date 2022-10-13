@@ -41,7 +41,8 @@ class Procurement414(ProcurementBaseSpider):
     def detail(self, response: HtmlResponse):
         save = response.meta['save']
         mainbody = response.xpath('//div[@class="plainText_content"]//text()').extract()
+        mainbody_table = response.xpath('//table').extract()
+        save['mainbody_table'] = mainbody_table if mainbody_table else []
         save['mainbody'] = mainbody[0] if mainbody else None
-        print(save)
         yield save
 

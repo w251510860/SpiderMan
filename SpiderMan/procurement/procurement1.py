@@ -5,7 +5,7 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Procurement1(ProcurementBaseSpider):
-    name = "Procurement_1"
+    name = "procurement1"
     base_link = ''
     hospital_name = '苏州大学附属第一医院'
 
@@ -15,7 +15,6 @@ class Procurement1(ProcurementBaseSpider):
         for i in range(72):
             list_url = 'http://fyy.sdfyy.cn/Article/lists/category/65/p/{}.html'.format(i + 1)
             urls.append(list_url)
-        print(urls)
         params = {
             # "hospital": "1010",
             # "category": "32",
@@ -30,7 +29,6 @@ class Procurement1(ProcurementBaseSpider):
 
         # 遍历、翻页
         for index, url in enumerate(urls):
-            print("第{}页".format(index + 1))
             yield scrapy.FormRequest(url=url, formdata=params, callback=self.parse, method='GET')
 
     def parse(self, response: HtmlResponse):

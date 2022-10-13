@@ -52,5 +52,6 @@ class Procurement686(ProcurementBaseSpider):
             save['img_link'] = 'http://www.nt2191.com' + response.xpath('.//div[@class="newsarticles"]//img/@src').extract()[0]
         if content:
             save['mainbody'] = '\n'.join(content)
-        print(save)
+        mainbody_table = response.xpath('//table').extract()
+        save['mainbody_table'] = mainbody_table if mainbody_table else []
         yield save

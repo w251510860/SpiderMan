@@ -13,7 +13,6 @@ class Nanjinggonggongcaigouxinxiwang3(ProcurementBaseSpider):
     def start_requests(self):
         # 初始页
         urls = 'https://njgc.jfh.com/app/search/keywords'
-        print(urls)
         params = {
             "keywords": "医院",
             "page": "1",
@@ -23,7 +22,6 @@ class Nanjinggonggongcaigouxinxiwang3(ProcurementBaseSpider):
         pages = 30
         # 遍历、翻页
         for i in range(pages):
-            print("第{}页".format(i + 1))
             params['page'] = i+1
             j = json.dumps(params)
             yield scrapy.FormRequest(url=urls, body=j, headers={'Content-Type': 'application/json'}, callback=self.parse, method='POST')
@@ -54,6 +52,8 @@ class Nanjinggonggongcaigouxinxiwang3(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

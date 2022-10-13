@@ -5,7 +5,7 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Procurement813(ProcurementBaseSpider):
-    name = "Procurement_813"
+    name = "Procurement813"
     base_link = ''
     hospital_name = '江苏省苏北人民医院'
     def start_requests(self):
@@ -14,7 +14,6 @@ class Procurement813(ProcurementBaseSpider):
         for i in range(33):
             list_url = 'https://www.yzsbh.com/Html/News/Columns/7/{}.html'.format(i + 1)
             urls.append(list_url)
-        print(urls)
         params = {
 
         }
@@ -22,13 +21,11 @@ class Procurement813(ProcurementBaseSpider):
         self.hospital_url = 'https://www.yzsbh.com/'
         # 遍历、翻页
         for index, url in enumerate(urls):
-            print("第{}页".format(index + 1))
             yield scrapy.FormRequest(url=url, formdata=params, callback=self.parse, method='GET')
 
     def parse(self, response: HtmlResponse):
         # 解析列表页
         # 测试请求是否成功
-        print("123")
         context = response.xpath("//ul[@class='column_list']/li/a/@href")
 
         for each in context:
@@ -52,6 +49,8 @@ class Procurement813(ProcurementBaseSpider):
         #     annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
         #     item['annex_link'] = annex_link
         #     item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

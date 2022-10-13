@@ -42,5 +42,6 @@ class Procurement429(ProcurementBaseSpider):
         for data in response.xpath('//div[@id="detail_content"]/p'):
             content.append(''.join(data.xpath('./span/text()').extract()))
         save['mainbody'] = '\n'.join(content)
-        print(save)
+        mainbody_table = response.xpath('//table').extract()
+        save['mainbody_table'] = mainbody_table if mainbody_table else []
         yield save

@@ -6,7 +6,7 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Procurement3(ProcurementBaseSpider):
-    name = "Procurement_3"
+    name = "procurement3"
     base_link = ''
     hospital_name = '苏州市立医院'
     def start_requests(self):
@@ -18,7 +18,6 @@ class Procurement3(ProcurementBaseSpider):
             list_url = 'http://smh.cc/api2020/api/news/getNewsInfo?hospital=1010&category=32&tag=&size=8&pageNum={}&type=0&status=1&_=1656661309811'.format(
                 i + 1)
             urls.append(list_url)
-        print(urls)
         params = {
             # "hospital": "1010",
             # "category": "32",
@@ -32,7 +31,6 @@ class Procurement3(ProcurementBaseSpider):
         self.hospital_url = 'http://smh.cc/'
         # 遍历、翻页
         for index, url in enumerate(urls):
-            print("第{}页".format(index + 1))
             yield scrapy.FormRequest(url=url, formdata=params, callback=self.parse, method='GET')
 
     def parse(self, response: HtmlResponse):
@@ -63,7 +61,7 @@ class Procurement3(ProcurementBaseSpider):
                     item['annex_link'] = json.loads(json.loads(fileUrl))['url']
                     item['annex_title'] = json.loads(json.loads(fileUrl))['name']
                 except:
-                    print(fileUrl)
+                    print(f'procurement3 error {fileUrl}')
 
         item['title'] = title
         item['ori_url'] = ori_url

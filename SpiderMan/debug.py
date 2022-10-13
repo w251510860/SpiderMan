@@ -18,6 +18,6 @@ def run(crawler_name):
 
 
 if __name__ == '__main__':
-    run('procurement700')
+    run('procurement690')
     # run('JS2')
 

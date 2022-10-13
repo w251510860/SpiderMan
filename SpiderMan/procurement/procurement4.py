@@ -10,7 +10,7 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Procurement4(ProcurementBaseSpider):
-    name = "Procurement4"
+    name = "procurement4"
     base_link = ''
 
     def start_requests(self):
@@ -35,5 +35,4 @@ class Procurement4(ProcurementBaseSpider):
     def parse(self, response: HtmlResponse):
         # 解析列表页
         # 测试请求是否成功
-        print(response.json())
         return
