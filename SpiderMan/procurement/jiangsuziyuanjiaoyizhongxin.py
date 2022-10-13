@@ -15,7 +15,6 @@ class Jiangsuziyuanjiaoyizhongxin(ProcurementBaseSpider):
         urls = 'http://jsggzy.jszwfw.gov.cn/inteligentsearch/rest/esinteligentsearch/getFullTextDataNew'
         keywords = ['医院', '卫生院', '保健']
         pages = [6847, 3005, 745]
-        print(urls)
         params = {"token": "", "pn": 0, "rn": 10, "sdt": "", "edt": "",
                   "wd": "医院",
                   "inc_wd": "", "exc_wd": "", "fields": "title;content", "cnum": "", "sort": "{\"infodatepx\":\"0\"}",
@@ -26,7 +25,6 @@ class Jiangsuziyuanjiaoyizhongxin(ProcurementBaseSpider):
         # 遍历、翻页
         for index, keyword in enumerate(keywords):
             for i in range(pages[index]):
-                print("第{}页".format(i + 1))
                 params['pn'] = i * 10
                 params['wd'] = keyword
                 j = json.dumps(params)
@@ -62,6 +60,8 @@ class Jiangsuziyuanjiaoyizhongxin(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

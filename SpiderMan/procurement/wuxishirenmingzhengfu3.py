@@ -5,14 +5,13 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Wuxishirenmingzhengfu3(ProcurementBaseSpider):
-    name = "Wuxishirenmingzhengfu_3"
+    name = "wuxishirenmingzhengfu3"
     base_link = ''
     hospital_name = '无锡市市人民政府_保健'
 
     def start_requests(self):
         # 初始页
         urls = 'https://www.wuxi.gov.cn/search/index.html?siteId=4&siteName=江阴市人民政府'
-        print(urls)
         params = {
             'searchType': 'fullSearch',
             'kind': '5',
@@ -30,7 +29,6 @@ class Wuxishirenmingzhengfu3(ProcurementBaseSpider):
 
         # 遍历、翻页
         for i in range(98):
-            print("第{}页".format(i + 1))
             params['page'] = '{}'.format(i+1)
             yield scrapy.FormRequest(url=urls, formdata=params, callback=self.parse)
 
@@ -60,6 +58,8 @@ class Wuxishirenmingzhengfu3(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

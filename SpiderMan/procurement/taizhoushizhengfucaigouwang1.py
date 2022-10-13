@@ -5,7 +5,7 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Taizhoushizhengfucaigouwang1(ProcurementBaseSpider):
-    name = "Taizhoushizhengfucaigouwang_1"
+    name = "taizhoushizhengfucaigouwang1"
     base_link = ''
     hospital_name = '泰州市政府采购网'
 
@@ -19,7 +19,6 @@ class Taizhoushizhengfucaigouwang1(ProcurementBaseSpider):
             for j in range(page):
                 list_url = 'http://czj.taizhou.gov.cn/module/sitesearch/index.jsp?keyword=vc_title&columnid=0&keyvalue={}&webid=69&modalunitid=95103&currpage={}'.format(keyword, j + 1)
                 urls.append(list_url)
-        print(urls)
         params = {
             # "hospital": "1010",
             # "category": "32",
@@ -34,7 +33,6 @@ class Taizhoushizhengfucaigouwang1(ProcurementBaseSpider):
 
         # 遍历、翻页
         for index, url in enumerate(urls):
-            print("第{}页".format(index + 1))
             yield scrapy.FormRequest(url=url, formdata=params, callback=self.parse, method='GET')
 
     def parse(self, response: HtmlResponse):
@@ -63,6 +61,8 @@ class Taizhoushizhengfucaigouwang1(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

@@ -5,14 +5,13 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Procurement90(ProcurementBaseSpider):
-    name = "Procurement_90"
+    name = "procurement90"
     base_link = ''
     hospital_name = '淀山湖人民医院'
 
     def start_requests(self):
         # 初始页
         urls = 'https://czju.suzhou.gov.cn/zfcg/content/searchkey.action'
-        print(urls)
         params = {
             'title': '淀山湖人民医院',
             'page': "1",
@@ -23,7 +22,6 @@ class Procurement90(ProcurementBaseSpider):
 
         # 遍历、翻页
         for index in range(2):
-            print("第{}页".format(index + 1))
             params['page'] = '{}'.format(index + 1)
             yield scrapy.FormRequest(url=urls, formdata=params, callback=self.parse)
 
@@ -33,7 +31,6 @@ class Procurement90(ProcurementBaseSpider):
         context = response.json()
 
         for each in context['rows']:
-            print(each)
             if 'PROJECTID' in each:
                 article_url = 'https://czju.suzhou.gov.cn/zfcg/html/project/{}.shtml'.format(each['PROJECTID'])
                 yield scrapy.FormRequest(url=article_url, callback=self.articleparse,
@@ -59,6 +56,8 @@ class Procurement90(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

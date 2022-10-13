@@ -38,6 +38,8 @@ class Procurement411(ProcurementBaseSpider):
     def detail(self, response: HtmlResponse):
         save = response.meta['save']
         save['mainbody'] = '\n'.join(response.xpath('//div[@class="contentStyle"]//text()').extract())
+        mainbody_table = response.xpath('//table').extract()
+        save['mainbody_table'] = mainbody_table if mainbody_table else []
         if response.xpath('//a[contains(text(), "附件")]/@href').extract():
             save['annex_link'] = 'http://zhaobiao.jsph.org.cn' + response.xpath('//a[contains(text(), "附件")]/@href').extract()[0]
             save['annex_title'] = response.xpath('//a[contains(text(), "附件")]/text()').extract()[0]

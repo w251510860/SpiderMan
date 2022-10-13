@@ -15,7 +15,6 @@ class Huaianshizhengfucaigouwang1(ProcurementBaseSpider):
         for i in range(186):
             list_url = 'http://service001.huaian.gov.cn:8080//api/query.do?q=keyword:"医院"&ename=core&pageNo={}&hl.fl=title,TEXT_CONTENT&fq=["","layer:0152*"]&rows=15&sort=release_time:desc'.format(i + 1)
             urls.append(list_url)
-        print(urls)
         params = {
             # "hospital": "1010",
             # "category": "32",
@@ -30,7 +29,6 @@ class Huaianshizhengfucaigouwang1(ProcurementBaseSpider):
 
         # 遍历、翻页
         for index, url in enumerate(urls):
-            print("第{}页".format(index + 1))
             yield scrapy.FormRequest(url=url, formdata=params, callback=self.parse, method='GET')
 
     def parse(self, response: HtmlResponse):
@@ -59,6 +57,8 @@ class Huaianshizhengfucaigouwang1(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

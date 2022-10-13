@@ -6,7 +6,7 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Procurement23(ProcurementBaseSpider):
-    name = "Procurement_23"
+    name = "procurement23"
     base_link = ''
     hospital_name = '常熟市第三人民医院（常熟市精神卫生中心）'
 
@@ -14,7 +14,6 @@ class Procurement23(ProcurementBaseSpider):
         # 初始页
         urls = 'http://jsggzy.jszwfw.gov.cn/inteligentsearch/rest/esinteligentsearch/getFullTextDataNew'
 
-        print(urls)
         params = {"token": "", "pn": 0, "rn": 10, "sdt": "", "edt": "",
                   "wd": "常熟市第三人民医院（常熟市精神卫生中心）",
                   "inc_wd": "", "exc_wd": "", "fields": "title;content", "cnum": "", "sort": "{\"infodatepx\":\"0\"}",
@@ -24,7 +23,6 @@ class Procurement23(ProcurementBaseSpider):
         self.hospital_url = 'http://jsggzy.jszwfw.gov.cn/'
         # 遍历、翻页
         for index in range(11):
-            print("第{}页".format(index + 1))
             params['pn'] = index * 10
             j = json.dumps(params)
             yield scrapy.FormRequest(url=urls, body=j, callback=self.parse)
