@@ -87,8 +87,9 @@ class Procurement418(ProcurementBaseSpider):
             save["release_date"] = data["syncTime"]
             if data["contentHtml"]:
                 content = etree.HTML(data["contentHtml"])
+                mainbody_table = content.xpath('//table')
+                save['mainbody_table'] = mainbody_table if mainbody_table else []
                 save['mainbody'] = '\n'.join(content.xpath("//text()"))
-            print(save)
             yield save
         start = response.meta['start']
         if start >= int(response.json()["count"]):

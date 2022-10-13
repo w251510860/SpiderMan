@@ -8,7 +8,7 @@ class ProcurementBaseSpider(scrapy.Spider):
     headers = {'User-Agent': UserAgent().random}
     count = 0
     save = {
-        "crawl_time": arrow.now(),
+        "crawl_time": arrow.now().format(),
         "hospital_name": "",  # 医院名称
         "title": "",  # 标题
         "ori_url": "",  # 源文连接
@@ -18,7 +18,7 @@ class ProcurementBaseSpider(scrapy.Spider):
         "img_link": "",  # 图片链接（正文是一张图片时）
         "img_title": "",  # 图片标题（正文是一张图片时）
         "mainbody": "",  # 内容主题（正文时文本时）
-        "mainbody_table": "",  # 内容标题（正文时文本时）
+        "mainbody_table": [],  # 内容标题（正文时文本时）
         "others": ""  #
     }
     custom_settings = {

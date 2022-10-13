@@ -6,7 +6,7 @@ from procurement.Base import ProcurementBaseSpider
 
 
 class Procurement158(ProcurementBaseSpider):
-    name = "Procurement_158"
+    name = "procurement158"
     base_link = ''
     hospital_name = '太仓市双凤卫生院'
 
@@ -14,7 +14,6 @@ class Procurement158(ProcurementBaseSpider):
         # 初始页
         urls = 'http://jsggzy.jszwfw.gov.cn/inteligentsearch/rest/esinteligentsearch/getFullTextDataNew'
 
-        print(urls)
         params = {"token": "", "pn": 0, "rn": 10, "sdt": "", "edt": "",
                   "wd": "太仓市双凤卫生院",
                   "inc_wd": "", "exc_wd": "", "fields": "title;content", "cnum": "", "sort": "{\"infodatepx\":\"0\"}",
@@ -24,7 +23,6 @@ class Procurement158(ProcurementBaseSpider):
         self.hospital_url = 'http://jsggzy.jszwfw.gov.cn/'
         # 遍历、翻页
         for index in range(9):
-            print("第{}页".format(index + 1))
             params['pn'] = index * 10
             j = json.dumps(params)
             yield scrapy.FormRequest(url=urls, body=j, callback=self.parse)
@@ -59,6 +57,8 @@ class Procurement158(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

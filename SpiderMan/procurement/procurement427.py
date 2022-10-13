@@ -52,5 +52,6 @@ class Procurement427(ProcurementBaseSpider):
         if annex:
             save['annex_link'] = 'http://www.njsech.net' + annex.xpath('./@href').extract()[0]
             save['annex_title'] = annex.xpath('./text()').extract()[0]
-        print(save)
+        mainbody_table = response.xpath('//table').extract()
+        save['mainbody_table'] = mainbody_table if mainbody_table else []
         yield save

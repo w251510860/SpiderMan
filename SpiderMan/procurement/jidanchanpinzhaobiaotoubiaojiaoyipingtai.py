@@ -15,7 +15,6 @@ class Jidanchanpinzhaobiaotoubiaojiaoyipingtai(ProcurementBaseSpider):
         urls = 'https://www.chinabidding.com/search/proj.htm'
         keywords = ['医院', '卫生院', '保健院']
         pages = [100, 100, 100]
-        print(urls)
         params = {
             'fullText': '医院',
             'infoClassCodes': '0105',
@@ -29,7 +28,6 @@ class Jidanchanpinzhaobiaotoubiaojiaoyipingtai(ProcurementBaseSpider):
             params['fullText'] = keywords[index]
             for i in range(pages[index]):
                 params['currentPage'] = '{}'.format(i+1)
-                print("第{}页".format(index*10 + i))
                 yield scrapy.FormRequest(url=urls, body=json.dumps(params), callback=self.parse)
 
     def parse(self, response: HtmlResponse):
@@ -60,6 +58,8 @@ class Jidanchanpinzhaobiaotoubiaojiaoyipingtai(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

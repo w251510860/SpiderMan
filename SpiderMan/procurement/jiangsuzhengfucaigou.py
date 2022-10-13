@@ -21,7 +21,6 @@ class Jiangsuzhengfucaigou(ProcurementBaseSpider):
             for j in range(page):
                 list_url = 'http://search.changzhou.gov.cn/index.php?c=index&a=search&keyword={}&referer=&range=2&edit=0&lanmu=0&sitename=zfcg&sort=3&time=0&page={}&contype=0'.format(keyword, j + 1)
                 urls.append(list_url)
-        print(urls)
         params = {
             # "hospital": "1010",
             # "category": "32",
@@ -36,7 +35,6 @@ class Jiangsuzhengfucaigou(ProcurementBaseSpider):
 
         # 遍历、翻页
         for index, url in enumerate(urls):
-            print("第{}页".format(index + 1))
             yield scrapy.FormRequest(url=url, formdata=params, callback=self.parse, method='GET')
 
     def parse(self, response: HtmlResponse):
@@ -67,6 +65,8 @@ class Jiangsuzhengfucaigou(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

@@ -15,7 +15,6 @@ class Nantongshigonggongziyuanjiaoyiwang(ProcurementBaseSpider):
         urls = 'http://zfcg.nantong.gov.cn/inteligentsearch/rest/esinteligentsearch/getFullTextDataNew'
         keywords = ['医院', '卫生院', '保健']
         pages = [400, 100, 50]
-        print(urls)
         params = {"token": "", "pn": 0, "rn": 20, "sdt": "", "edt": "", "wd": "医院", "inc_wd": "", "exc_wd": "",
                   "fields": "title;content", "cnum": "001", "sort": "{\"webdate\":\"0\"}", "ssort": "title", "cl": 500,
                   "terminal": "", "condition": [], "time": None, "highlights": "title;content", "statistics": None,
@@ -27,7 +26,6 @@ class Nantongshigonggongziyuanjiaoyiwang(ProcurementBaseSpider):
             params['wd'] = keywords[index]
             for j in range(page):
                 params['pn'] = j * params['rn']
-                print("关键词：{}，第{}页".format(params['wd'], params['pn']/20 + 1))
                 yield scrapy.FormRequest(url=urls, body=json.dumps(params), callback=self.parse)
 
     def parse(self, response: HtmlResponse):
@@ -55,6 +53,8 @@ class Nantongshigonggongziyuanjiaoyiwang(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        mainbody_table = response.xpath('//table').extract()
+        item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date
