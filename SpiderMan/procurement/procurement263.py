@@ -54,6 +54,7 @@ class Procurement1(ProcurementBaseSpider):
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
         mainbody_table = response.xpath('//table').extract()
+        item['content'] = response.text
         item['mainbody_table'] = mainbody_table if mainbody_table else []
         item['title'] = title
         item['ori_url'] = ori_url

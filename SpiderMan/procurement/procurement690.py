@@ -54,4 +54,5 @@ class Procurement690(ProcurementBaseSpider):
         save['mainbody'] = '\n'.join(content)
         mainbody_table = response.xpath('//table').extract()
         save['mainbody_table'] = mainbody_table if mainbody_table else []
+        save['content'] = response.text
         yield save

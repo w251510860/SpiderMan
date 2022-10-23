@@ -62,7 +62,7 @@ class Procurement3(ProcurementBaseSpider):
                     item['annex_title'] = json.loads(json.loads(fileUrl))['name']
                 except:
                     print(f'procurement3 error {fileUrl}')
-
+        item['content'] = response.text
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = release_date

@@ -54,4 +54,5 @@ class Procurement427(ProcurementBaseSpider):
             save['annex_title'] = annex.xpath('./text()').extract()[0]
         mainbody_table = response.xpath('//table').extract()
         save['mainbody_table'] = mainbody_table if mainbody_table else []
+        save['content'] = response.text
         yield save

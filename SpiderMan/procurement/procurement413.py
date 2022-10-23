@@ -41,5 +41,6 @@ class Procurement413(ProcurementBaseSpider):
         if response.xpath('//a[contains(@href, "upload")]/@href').extract():
             save['annex_link'] = 'https://www.jszlyy.com.cn/' + response.xpath('//a[contains(@href, "upload")]/@href').extract()[0]
             save['annex_title'] = response.xpath('//a[contains(@href, "upload")]//text()').extract()[0]
+        save['content'] = response.text
         yield save
 

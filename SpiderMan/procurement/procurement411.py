@@ -43,5 +43,6 @@ class Procurement411(ProcurementBaseSpider):
         if response.xpath('//a[contains(text(), "附件")]/@href').extract():
             save['annex_link'] = 'http://zhaobiao.jsph.org.cn' + response.xpath('//a[contains(text(), "附件")]/@href').extract()[0]
             save['annex_title'] = response.xpath('//a[contains(text(), "附件")]/text()').extract()[0]
+        save['content'] = response.text
         yield save
 
