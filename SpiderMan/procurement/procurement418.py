@@ -88,6 +88,7 @@ class Procurement418(ProcurementBaseSpider):
             if data["contentHtml"]:
                 content = etree.HTML(data["contentHtml"])
                 mainbody_table = content.xpath('//table')
+                save['content'] = data["contentHtml"]
                 save['mainbody_table'] = mainbody_table if mainbody_table else []
                 save['mainbody'] = '\n'.join(content.xpath("//text()"))
             yield save

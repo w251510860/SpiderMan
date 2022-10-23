@@ -41,7 +41,7 @@ MONGO_USER: str = getenv('MONGO_USER', 'admin')
 MONGO_PSW: str = getenv('MONGO_PSW', '123456')
 
 # 下载间隔
-DOWNLOAD_DELAY = 5
+DOWNLOAD_DELAY = 0.2
 
 # 命令行启动多个爬虫
 # todo: 暂时不可用,待修复

@@ -56,6 +56,7 @@ class Procurement22(ProcurementBaseSpider):
             annex_link = self.hospital_url + response.xpath('//a[@class="ke-insertfile"]/@href').extract()[0]
             item['annex_link'] = annex_link
             item['annex_title'] = annex_title.extract()[0]
+        item['content'] = response.text
         item['title'] = title
         item['ori_url'] = ori_url
         item['release_date'] = ''

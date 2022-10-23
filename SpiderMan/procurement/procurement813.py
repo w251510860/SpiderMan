@@ -57,4 +57,5 @@ class Procurement813(ProcurementBaseSpider):
         item['mainbody'] = mainbody
         item['col'] = self.name
         item['hospital_name'] = self.hospital_name
+        item['content'] = response.text
         return item
